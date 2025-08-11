@@ -9,6 +9,8 @@ class AuditSystem {
     this.progressBar = document.getElementById('progress-bar');
     this.progressText = document.getElementById('progress-text');
     this.sectionsContainer = document.getElementById('sections-container');
+    this.companyInput = document.getElementById('company-input');
+
     this.init();
   }
 
@@ -100,6 +102,14 @@ class AuditSystem {
         this.updateProgress();
       }
     });
+
+    // Escuchar cambios en el input de la empresa para actualizar el estado del botón
+    if (this.companyInput) {
+      this.companyInput.addEventListener('input', () => {
+        this.updateProgress();
+      });
+    }
+
     this.calculateBtn.addEventListener('click', () => this.calculateScore());
   }
 
@@ -115,13 +125,18 @@ class AuditSystem {
     return names.size;
   }
 
+   isCompanyNameValid() {
+    return this.companyInput && this.companyInput.value.trim().length > 0;
+  }
+
   updateProgress() {
     const total = this.getTotalQuestions();
     const answered = this.getAnsweredQuestions();
     const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
     this.progressBar.style.width = `${pct}%`;
     this.progressText.textContent = `${answered} de ${total} completadas`;
-    this.calculateBtn.disabled = answered < total || total === 0;
+    const companyValid = this.isCompanyNameValid();
+    this.calculateBtn.disabled = answered < total || total === 0 || !companyValid;
   }
 
   paintRow(radioEl) {
@@ -134,6 +149,13 @@ class AuditSystem {
   }
 
   calculateScore() {
+    const companyName = this.companyInput ? this.companyInput.value.trim() : '';
+    if (!companyName) {
+      this.showError('Por favor, ingresa el nombre de la empresa antes de calcular el puntaje.');
+      this.companyInput?.focus();
+      return;
+    }
+
     const groups = this.groupAnswers();
     let yes = 0, no = 0;
     Object.values(groups).forEach((v) => { if (v === 'yes') yes++; else if (v === 'no') no++; });
@@ -141,6 +163,30 @@ class AuditSystem {
     if (totalEvaluado === 0) return this.showError('Responde al menos una pregunta (Sí o No) para calcular el puntaje.');
     const pct = Math.round((yes / totalEvaluado) * 100);
     this.displayResult(pct, yes, totalEvaluado);
+    this.saveAuditResults(pct, yes, totalEvaluado, companyName);
+  }
+
+  async saveAuditResults(score, yesCount, totalAnswered, company) {
+    try {
+      const res = await fetch('backend/database/save_audit.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        score: score,
+        total_yes: yesCount,
+        total_answered: totalAnswered,
+        company: company
+      })
+    });
+      const data = await res.json();
+      if (data.success) {
+        console.log("Auditoría guardada con ID:", data.id);
+      } else {
+        console.error("Error al guardar auditoría:", data.error);
+      }
+    } catch (e) {
+      console.error("Fallo en la conexión al backend", e);
+    }
   }
 
   groupAnswers() {

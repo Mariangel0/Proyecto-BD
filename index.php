@@ -36,7 +36,17 @@
       </div>
 
       <form id="audit-form" action="#" method="POST">
-
+        <div class="mb-3">
+          <label for="company-input" class="form-label">
+            <i class="bi bi-building"></i> Nombre de la Empresa *
+          </label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="company-input" 
+            placeholder="Ingresa el nombre de la empresa"
+            required>
+        </div>
         <div id="sections-container"></div>
 
         <div class="action-section">
