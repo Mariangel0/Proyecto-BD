@@ -3,7 +3,6 @@ config.php
 backend/config/.env
 
 # Archivos de base de datos locales
-*.sql
 *.sqlite
 *.db
 
