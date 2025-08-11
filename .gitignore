@@ -1,0 +1,29 @@
+# Archivos de configuración sensibles
+config.php
+backend/config/.env
+
+# Archivos de base de datos locales
+*.sql
+*.sqlite
+*.db
+
+# Logs y temporales
+*.log
+tmp/
+cache/
+session/
+
+# Archivos del servidor local
+.DS_Store
+Thumbs.db
+
+# Configuración de IDEs
+.vscode/
+.idea/
+
+# Composer vendor
+vendor/
+
+# Archivos de PHPUnit
+phpunit.xml
+phpunit.xml.dist
