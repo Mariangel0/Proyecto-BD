@@ -157,35 +157,114 @@ class AuditSystem {
     }
 
     const groups = this.groupAnswers();
-    let yes = 0, no = 0;
-    Object.values(groups).forEach((v) => { if (v === 'yes') yes++; else if (v === 'no') no++; });
-    const totalEvaluado = yes + no;
+    let yes = 0, no = 0, na = 0;
+     Object.values(groups).forEach((v) => { 
+      if (v === 'yes') yes++; 
+      else if (v === 'no') no++; 
+      else if (v === 'na') na++;
+    });
+    const totalEvaluado = yes + no + na;
     if (totalEvaluado === 0) return this.showError('Responde al menos una pregunta (Sí o No) para calcular el puntaje.');
     const pct = Math.round((yes / totalEvaluado) * 100);
-    this.displayResult(pct, yes, totalEvaluado);
-    this.saveAuditResults(pct, yes, totalEvaluado, companyName);
+
+    let message;
+    if (pct >= 80) message = 'Excelente nivel de seguridad';
+    else if (pct >= 60) message = 'Buen nivel, con áreas de mejora';
+    else message = 'Requiere atención inmediata';
+
+    this.displayResult(pct, yes, no, na, message, totalEvaluado);
+    this.saveAuditResults(pct, yes, no, na, totalEvaluado, message, companyName, groups);
   }
 
-  async saveAuditResults(score, yesCount, totalAnswered, company) {
+  async saveAuditResults(pct, yesCount, noCount, naCount, totalAnswered, message, company, answers) {
     try {
-      const res = await fetch('backend/database/save_audit.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        score: score,
+
+      const payload = {
+        score_percentage: pct,
         total_yes: yesCount,
+        total_no: noCount,       
+        total_na: naCount,         
         total_answered: totalAnswered,
-        company: company
-      })
-    });
+        description: message, 
+        company: company,
+        answers: answers // Agregar las respuestas
+      };
+
+      const res = await fetch('backend/database/save_audit.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      
       const data = await res.json();
       if (data.success) {
         console.log("Auditoría guardada con ID:", data.id);
+        if (data.section_risks) {
+          console.log("Análisis de riesgos por sección:", data.section_risks);
+          this.displaySectionRisks(data.section_risks, data.sections_info || {});
+        }
       } else {
         console.error("Error al guardar auditoría:", data.error);
+        this.showError("Error al guardar: " + (data.error || "Error desconocido"));
       }
     } catch (e) {
       console.error("Fallo en la conexión al backend", e);
+      this.showError("Error de conexión con el servidor");
+    }
+  }
+
+  displaySectionRisks(sectionRisks, sectionsInfo = {}) {
+    const riskContainer = document.createElement('div');
+    riskContainer.className = 'risk-analysis';
+    riskContainer.innerHTML = '<h5>Análisis de Riesgos por Actividad</h5>';
+    
+    const table = document.createElement('table');
+    table.className = 'table table-sm table-striped';
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>Actividad</th>
+          <th class="text-center">Integridad</th>
+          <th class="text-center">Confidencialidad</th>
+          <th class="text-center">Disponibilidad</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
+    
+    const tbody = table.querySelector('tbody');
+    Object.entries(sectionRisks).forEach(([sectionId, risks]) => {
+      const sectionInfo = sectionsInfo[sectionId];
+      let sectionLabel = `Sección ${sectionId}`;
+      
+      if (sectionInfo) {
+        sectionLabel = `${sectionInfo.code}. ${sectionInfo.title}`;
+      }
+      
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${sectionLabel}</td>
+        <td class="text-center"><span class="color-circle ${getSoftColorClass(risks.integrity)}"></span></td>
+        <td class="text-center"><span class="color-circle ${getSoftColorClass(risks.confidentiality)}"></span></td>
+        <td class="text-center"><span class="color-circle ${getSoftColorClass(risks.availability)}"></span></td>
+
+      `;
+      tbody.appendChild(row);
+    });
+    
+    riskContainer.appendChild(table);
+    
+    const existingRisk = document.querySelector('.risk-analysis');
+    if (existingRisk) existingRisk.remove();
+    this.resultCard.parentNode.insertBefore(riskContainer, this.resultCard);
+    
+    function getSoftColorClass(risk) {
+      switch(risk) {
+        case 'VERDE': return 'risk-soft-green';
+        case 'AMARILLO': return 'risk-soft-yellow';
+        case 'ROJO': return 'risk-soft-red';
+        default: return 'risk-soft-gray';
+      }
     }
   }
 
@@ -195,7 +274,7 @@ class AuditSystem {
     return map;
   }
 
-  displayResult(percentage, yesCount, totalAnswered) {
+  displayResult(percentage, yesCount,noCount, naCount, message, totalAnswered) {
     const scoreNumber = document.getElementById('score-number');
     const scoreLabel = document.getElementById('score-label');
     const scoreIcon = document.getElementById('score-icon');
@@ -203,10 +282,10 @@ class AuditSystem {
 
     this.resultCard.className = 'result-card show';
 
-    let category, icon, message;
-    if (percentage >= 80) { category = 'score-excellent'; icon = 'bi-shield-check'; message = 'Excelente nivel de seguridad'; }
-    else if (percentage >= 60) { category = 'score-good'; icon = 'bi-shield-exclamation'; message = 'Buen nivel, con áreas de mejora'; }
-    else { category = 'score-poor'; icon = 'bi-shield-x'; message = 'Requiere atención inmediata'; }
+    let category, icon;
+    if (percentage >= 80) { category = 'score-excellent'; icon = 'bi-shield-check'; }
+    else if (percentage >= 60) { category = 'score-good'; icon = 'bi-shield-exclamation'; }
+    else { category = 'score-poor'; icon = 'bi-shield-x'; }
 
     this.resultCard.classList.add(category);
     scoreNumber.textContent = `${percentage}%`;
@@ -214,11 +293,29 @@ class AuditSystem {
     scoreIcon.innerHTML = `<i class="bi ${icon}"></i>`;
 
     scoreDetails.innerHTML = `
-      <div class="row g-3 mt-2">
-        <div class="col-md-4 text-center"><div class="fw-bold">Respuestas Positivas</div><div class="fs-4">${yesCount}</div></div>
-        <div class="col-md-4 text-center"><div class="fw-bold">Total Evaluado</div><div class="fs-4">${totalAnswered}</div></div>
-        <div class="col-md-4 text-center"><div class="fw-bold">Puntaje Final</div><div class="fs-4">${percentage}%</div></div>
-      </div>`;
+      <div class="d-flex flex-wrap justify-content-center g-3 mt-2">
+        <div class="text-center p-2" style="flex: 0 0 180px;">
+          <div class="fw-bold">Respuestas Positivas</div>
+          <div class="fs-4">${yesCount}</div>
+        </div>
+        <div class="text-center p-2" style="flex: 0 0 180px;">
+          <div class="fw-bold">Respuestas Negativas</div>
+          <div class="fs-4">${noCount}</div>
+        </div>
+        <div class="text-center p-2" style="flex: 0 0 180px;">
+          <div class="fw-bold">Respuestas N/A</div>
+          <div class="fs-4">${naCount}</div>
+        </div>
+        <div class="text-center p-2" style="flex: 0 0 180px;">
+          <div class="fw-bold">Total Evaluado</div>
+          <div class="fs-4">${totalAnswered}</div>
+        </div>
+        <div class="text-center p-2" style="flex: 0 0 180px;">
+          <div class="fw-bold">Puntaje Final</div>
+          <div class="fs-4">${percentage}%</div>
+        </div>
+      </div>
+    `;
     this.resultCard.style.display = 'block';
     this.resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }

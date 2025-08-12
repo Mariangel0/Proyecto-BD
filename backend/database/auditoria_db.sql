@@ -332,16 +332,41 @@ INSERT INTO `sections` (`id`, `CODE`, `title`, `sort_order`) VALUES
 (8, 'A6', 'Diseño y desarrollo de la base de datos', 6),
 (9, 'A7', 'Respuesta ante incidentes', 7);
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `audit_results`
+--
 DROP TABLE IF EXISTS `audit_results`;
 CREATE TABLE IF NOT EXISTS `audit_results` (
 	`id` INT AUTO_INCREMENT PRIMARY KEY,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `score_percentage` INT NOT NULL,
     `total_yes` INT NOT NULL,
+    `total_no` INT NOT NULL,
+    `total_na` INT NOT NULL,
     `total_answered` INT NOT NULL,
+    `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
     `company` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `activity_audit_results`
+--
+DROP TABLE IF EXISTS `section_audit_results`;
+CREATE TABLE IF NOT EXISTS `section_audit_results` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `section_id` INT NOT NULL,
+    `audit_result_id` INT NOT NULL,
+    `integrity` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `confidentiality` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `availability` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE CASCADE,
+    FOREIGN KEY (audit_result_id) REFERENCES audit_results(id) ON DELETE CASCADE,
+    UNIQUE KEY uq_section_audit (section_id, audit_result_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Restricciones para tablas volcadas
