@@ -374,6 +374,22 @@ ALTER TABLE `question_risks`
   ADD CONSTRAINT `fk_qr_r` FOREIGN KEY (`risk_type_id`) REFERENCES `risk_types` (`id`);
 COMMIT;
 
+
+--
+-- Agregar tabla de usuarios
+--
+
+CREATE TABLE IF NOT EXISTS usuarios (
+  id_usuario   INT AUTO_INCREMENT PRIMARY KEY,
+  username     VARCHAR(50)  NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,   -- <- almacenamos hash, no texto plano
+  nombre       VARCHAR(100) NOT NULL,
+  email        VARCHAR(100),
+  creado_en    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

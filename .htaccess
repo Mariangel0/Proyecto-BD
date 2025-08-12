@@ -1,2 +1,13 @@
+# proyecto/.htaccess
 Options -Indexes
-DirectoryIndex index.php index.html
+RewriteEngine On
+RewriteBase /proyecto/
+
+# Mapea rutas "virtuales" a los archivos reales
+RewriteRule ^login\.php$   frontend/components/login.php  [L,QSA]
+RewriteRule ^logout\.php$  frontend/components/logout.php [L,QSA]
+
+# (opcional) protege el config
+<Files "config.php">
+  Require all denied
+</Files>
