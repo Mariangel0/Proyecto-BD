@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['user'])) {
+  header("Location: login.php");
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,13 +12,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sistema de Auditoría - Base de Datos</title>
 
-  <!-- Bootstrap CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet"/>
-  <!-- Bootstrap Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet"/>
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-
   <link rel="stylesheet" href="./frontend/css/styles.css"/>
 </head>
 <body>
@@ -21,7 +24,6 @@
   <div class="main-container">
     <div class="content-wrapper">
 
-      <!-- Progreso -->
       <div class="progress-section">
         <div class="progress-info">
           <div class="progress-label">
@@ -40,13 +42,9 @@
           <label for="company-input" class="form-label">
             <i class="bi bi-building"></i> Nombre de la Empresa *
           </label>
-          <input 
-            type="text" 
-            class="form-control" 
-            id="company-input" 
-            placeholder="Ingresa el nombre de la empresa"
-            required>
+          <input type="text" class="form-control" id="company-input" placeholder="Ingresa el nombre de la empresa" required>
         </div>
+
         <div id="sections-container"></div>
 
         <div class="action-section">
@@ -65,6 +63,12 @@
       </form>
     </div>
   </div>
+
+      <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 MSBR Auditoría - Evaluación de Seguridad y Rendimiento</p>
+        </div>
+    </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
   <script src="./frontend/script/script.js"></script>
