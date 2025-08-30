@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const hideError = () => errorBox?.classList.add('hidden');
 
-  // Mostrar error que viene del backend (?error=1)
   const params = new URLSearchParams(location.search);
   if (params.get('error') === '1') {
     showError('Usuario o contraseña incorrectos');

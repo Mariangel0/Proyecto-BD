@@ -16,7 +16,7 @@ if (!isset($_SESSION['user'])) {
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
+  <link rel="stylesheet" href="/proyecto/assets/css/header.css"/>
   <link rel="stylesheet" href="/proyecto/assets/css/styles.css" />
 </head>
 

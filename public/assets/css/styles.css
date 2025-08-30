@@ -1,39 +1,39 @@
 :root {
-  --primary-color: #3A5A40;
+  --primary-color: #3a5a40;
   --secondary-color: #588157;
   --success-color: #10b981;
   --warning-color: #f59e0b;
   --danger-color: #ef4444;
   --light-bg: #f8fafc;
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --border-radius: 12px;
 }
 
 * {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
-  background: #DAD7CD;
+  background: #dad7cd;
   min-height: 100vh;
 }
 
-
 .main-container {
-  background: white;
+  background: #fff;
   border-radius: var(--border-radius);
   box-shadow: var(--card-shadow);
   overflow: hidden;
   max-width: 1200px;
-  margin: 24px auto; 
+  margin: 24px auto;
+}
+.content-wrapper {
+  padding: 2rem;
 }
 
-.content-wrapper { padding: 2rem; }
-
-
+/* Progreso */
 .progress-section {
   background: var(--light-bg);
   border-radius: var(--border-radius);
@@ -41,14 +41,12 @@ body {
   margin-bottom: 2rem;
   border: 1px solid #e2e8f0;
 }
-
 .progress-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 }
-
 .progress-label {
   font-weight: 600;
   color: #374151;
@@ -56,33 +54,30 @@ body {
   align-items: center;
   gap: 0.5rem;
 }
-
 .progress {
   height: 12px;
   border-radius: 6px;
-  background-color: #e5e7eb;
+  background: #e5e7eb;
   overflow: hidden;
 }
-
 .progress-bar {
   background: linear-gradient(90deg, var(--success-color), #34d399);
   border-radius: 6px;
   transition: width 0.3s ease;
 }
 
-
+/* Secciones y preguntas */
 .section-card {
-  background: white;
+  background: #fff;
   border-radius: var(--border-radius);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   margin-bottom: 2rem;
   border: 1px solid #e5e7eb;
   overflow: hidden;
 }
-
 .section-header {
   background: var(--primary-color);
-  color: white;
+  color: #fff;
   padding: 1rem 1.5rem;
   font-weight: 600;
   font-size: 1.1rem;
@@ -95,64 +90,78 @@ body {
   border-bottom: 1px solid #060707;
   transition: all 0.2s ease;
 }
-.question-row:hover { background-color: #f8fafc; }
-.question-row:last-child { border-bottom: none; }
-
-.question-cell { padding: 1.25rem 1rem; vertical-align: middle; }
-
+.question-row:hover {
+  background: #f8fafc;
+}
+.question-row:last-child {
+  border-bottom: none;
+}
+.question-cell {
+  padding: 1.25rem 1rem;
+  vertical-align: middle;
+}
 .task-id {
   background: #e0e7ff;
-  color: #A3B18A;
+  color: #a3b18a;
   font-weight: 600;
   border-radius: 6px;
   padding: 0.25rem 0.75rem;
   font-size: 0.875rem;
   display: inline-block;
 }
-
-.question-text { font-weight: 500; color: #374151; line-height: 1.5; }
+.question-text {
+  font-weight: 500;
+  color: #374151;
+  line-height: 1.5;
+}
 
 .radio-group {
   display: flex;
   gap: 1rem;
   justify-content: center;
 }
-
-.radio-option { position: relative; }
-.radio-option input[type="radio"] {
-  position: absolute; opacity: 0; cursor: pointer;
+.radio-option {
+  position: relative;
 }
-
+.radio-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
 .radio-label {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px; height: 40px;
+  width: 60px;
+  height: 40px;
   border: 2px solid #e5e7eb;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-weight: 500; font-size: 0.875rem;
+  font-weight: 500;
+  font-size: 0.875rem;
 }
-
 .radio-option input[type="radio"]:checked + .radio-label.yes {
-  background-color: var(--success-color);
+  background: var(--success-color);
   border-color: var(--success-color);
-  color: white;
+  color: #fff;
 }
 .radio-option input[type="radio"]:checked + .radio-label.no {
-  background-color: var(--danger-color);
+  background: var(--danger-color);
   border-color: var(--danger-color);
-  color: white;
+  color: #fff;
 }
 .radio-option input[type="radio"]:checked + .radio-label.na {
-  background-color: #6b7280;
+  background: #6b7280;
   border-color: #6b7280;
-  color: white;
+  color: #fff;
 }
-.radio-label:hover { border-color: #9ca3af; transform: translateY(-1px); }
+.radio-label:hover {
+  border-color: #9ca3af;
+  transform: translateY(-1px);
+}
 
-/* ===== Acciones / resultados ===== */
+/* Acciones / botón */
 .action-section {
   background: var(--light-bg);
   padding: 2rem;
@@ -160,9 +169,12 @@ body {
   text-align: center;
   margin-top: 2rem;
 }
-
 .btn-calculate {
-  background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--secondary-color) 0%,
+    var(--primary-color) 100%
+  );
   border: none;
   padding: 0.75rem 2rem;
   border-radius: 50px;
@@ -176,24 +188,34 @@ body {
   box-shadow: 0 6px 20px rgba(24, 59, 103, 0.4);
 }
 .btn-calculate:disabled {
-  background: #9ca3af; 
-  transform: none; 
+  background: #9ca3af;
+  transform: none;
   box-shadow: none;
+  cursor: default;
 }
 
+/* Resultado */
 .result-card {
   margin-top: 2rem;
   border-radius: var(--border-radius);
   padding: 2rem;
   text-align: center;
   border: 2px solid #e5e7eb;
-  background: white;
+  background: #fff;
   transition: all 0.3s ease;
 }
-.result-card.show { animation: slideUp 0.5s ease; }
+.result-card.show {
+  animation: slideUp 0.5s ease;
+}
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .score-excellent {
@@ -211,108 +233,82 @@ body {
   border-color: var(--danger-color) !important;
   color: #991b1b !important;
 }
-.score-number { font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem; }
-.score-label { font-size: 1.25rem; font-weight: 600; }
-.score-icon { font-size: 2rem; margin-bottom: 1rem; }
-
-
-@media (max-width: 768px) {
-  .header { padding: 2rem 1rem; }
-  .header h1 { font-size: 2rem; }
-  .header h1 i { font-size: 1.8rem; }
-  .header p { font-size: 1rem; }
-
-  .content-wrapper { padding: 1rem; }
-  .question-cell { padding: 1rem 0.5rem; }
-  .radio-group { gap: 0.5rem; }
-  .radio-label { width: 50px; height: 35px; font-size: 0.75rem; }
+.score-number {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.score-label {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.score-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
-@media (max-width: 480px) {
-  .header h1 { font-size: 1.75rem; }
-  .header h1 i { font-size: 1.5rem; }
-  .header p { font-size: 0.95rem; }
-}
-
-/* ===== Resultados por Actividad ===== */
-
+/* Análisis de riesgos por sección */
 .risk-analysis {
   margin-top: 2rem;
   border-radius: var(--border-radius);
   padding: 1.5rem;
   text-align: center;
   border: 2px solid #e5e7eb;
-  background: white; 
+  background: #fff;
   transition: all 0.3s ease;
   box-shadow: var(--card-shadow);
 }
-
 .risk-analysis h5 {
   font-weight: 600;
   margin-bottom: 1rem;
 }
-
 .risk-analysis thead {
   background: var(--primary-color);
-  color: white;
+  color: #fff;
 }
-
 .color-circle {
   display: inline-block;
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid; 
+  border: 2px solid;
 }
-
 .risk-soft-green {
-  background-color: #d4edda; 
-  border-color: #28a745; 
+  background: #d4edda;
+  border-color: #28a745;
 }
-
 .risk-soft-yellow {
-  background-color: #fff3cd; 
-  border-color: #ffc107; 
+  background: #fff3cd;
+  border-color: #ffc107;
 }
-
 .risk-soft-red {
-  background-color: #f8d7da; 
+  background: #f8d7da;
   border-color: #dc3545;
 }
-
 .risk-soft-gray {
-  background-color: #e2e3e5; 
+  background: #e2e3e5;
   border-color: #6c757d;
 }
 
-.footer {
-    background: #333;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 50px;
-}
-
+/* Badge y empresa */
 .badge-progress {
-  background: var(--secondary-color);  
+  background: var(--secondary-color);
   color: #fff;
   font-weight: 600;
   padding: 0.35rem 0.75rem;
   border-radius: 8px;
   font-size: 0.85rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
-
 .form-label {
   font-weight: 600;
-  color: var(--primary-secondary);
+  color: var(--secondary-color);
   font-size: 0.95rem;
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
-
 .company-section {
   background: var(--light-bg);
   border-radius: var(--border-radius);
@@ -320,14 +316,12 @@ body {
   margin-bottom: 2rem;
   border: 1px solid #e2e8f0;
 }
-
 .company-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 }
-
 .company-label {
   font-weight: 600;
   color: #374151;
@@ -337,5 +331,29 @@ body {
   font-size: 1rem;
 }
 
+/* Footer */
+.footer {
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 50px;
+}
 
-
+/* Responsive básicos */
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: 1rem;
+  }
+  .question-cell {
+    padding: 1rem 0.5rem;
+  }
+  .radio-group {
+    gap: 0.5rem;
+  }
+  .radio-label {
+    width: 50px;
+    height: 35px;
+    font-size: 0.75rem;
+  }
+}
