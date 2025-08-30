@@ -40,11 +40,6 @@
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   backdrop-filter: blur(10px);
-  transition: 0.3s;
-}
-.brand-icon:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
 }
 .brand-icon i {
   font-size: 1.5rem;
@@ -75,11 +70,6 @@
   border-radius: 50px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
-  transition: 0.3s;
-}
-.user-section:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-1px);
 }
 
 .user-welcome {
@@ -116,13 +106,11 @@
   border-radius: 8px;
   color: #fff;
   text-decoration: none;
-  transition: 0.3s;
   backdrop-filter: blur(10px);
 }
 .logout-btn:hover {
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
-  transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 .logout-btn i {
