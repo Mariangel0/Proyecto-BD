@@ -368,9 +368,6 @@ CREATE TABLE IF NOT EXISTS `section_audit_results` (
     UNIQUE KEY uq_section_audit (section_id, audit_result_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Restricciones para tablas volcadas
---
 
 --
 -- Filtros para la tabla `activities`

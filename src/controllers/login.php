@@ -2,17 +2,17 @@
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-  header('Location: ../../login.php'); 
+  header('Location: /proyecto/login');
   exit;
 }
 
-require __DIR__ . '/../config/config.php';
+require __DIR__ . '/../../config/config.php'; // conexión $con
 
 $u = trim($_POST['username'] ?? '');
 $p = trim($_POST['password'] ?? '');
 
 if ($u === '' || $p === '') {
-  header('Location: ../../login.php?error=1');
+  header('Location: /proyecto/login?error=1');
   exit;
 }
 
@@ -27,9 +27,9 @@ if ($user && password_verify($p, $user['password_hash'])) {
   $_SESSION['user']  = $user['username'];
   $_SESSION['name']  = $user['nombre'];
   $_SESSION['uid']   = (int)$user['id_usuario'];
-  header('Location: ../../index.php');
+  header('Location: /proyecto/home'); // public/index.php
   exit;
 }
 
-header('Location: ../../login.php?error=1');
+header('Location: /proyecto/login?error=1');
 exit;

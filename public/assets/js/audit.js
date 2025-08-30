@@ -1,5 +1,5 @@
 // frontend/script/script.js
-const API_URL = 'backend/database/get_audit.php';
+const API_URL = '/proyecto/src/models/get_audit.php';
 
 class AuditSystem {
   constructor() {
@@ -187,10 +187,10 @@ class AuditSystem {
         total_answered: totalAnswered,
         description: message, 
         company: company,
-        answers: answers // Agregar las respuestas
+        answers: answers 
       };
 
-      const res = await fetch('backend/database/save_audit.php', {
+      const res = await fetch('/proyecto/src/controllers/save_audit.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

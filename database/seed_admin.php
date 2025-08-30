@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../backend/config/config.php';
+require __DIR__ . 'config/config.php';
 
 $username = 'admin';
 $password = 'admin123';

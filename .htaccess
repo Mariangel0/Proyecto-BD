@@ -3,11 +3,31 @@ Options -Indexes
 RewriteEngine On
 RewriteBase /proyecto/
 
-# Mapea rutas "virtuales" a los archivos reales
-RewriteRule ^login\.php$   frontend/components/login.php  [L,QSA]
-RewriteRule ^logout\.php$  frontend/components/logout.php [L,QSA]
+RewriteRule ^assets/(.*)$ public/assets/$1 [L]
+RewriteRule ^img/(.*)$    public/img/$1    [L]
+RewriteRule ^js/(.*)$     public/js/$1     [L]
+RewriteRule ^css/(.*)$    public/css/$1    [L]
 
-# (opcional) protege el config
-<Files "config.php">
+RewriteCond %{REQUEST_METHOD} =GET
+RewriteRule ^$ templates/login.php [L,QSA]
+
+RewriteCond %{REQUEST_METHOD} =GET
+RewriteRule ^login(?:\.php)?/?$ templates/login.php [L,QSA]
+
+RewriteCond %{REQUEST_METHOD} =POST
+RewriteRule ^login/?$ src/controllers/login.php [L,QSA]
+
+RewriteRule ^logout/?$         templates/logout.php           [L,QSA]
+RewriteRule ^save-audit/?$     src/controllers/save_audit.php [L,QSA]
+RewriteRule ^get-audit/?$      src/models/get_audit.php       [L,QSA]
+
+RewriteRule ^home/?$           public/index.php               [L,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [L]
+
+
+<FilesMatch "\.(sql|env|ini|log|bak|sh)$">
   Require all denied
-</Files>
+</FilesMatch>

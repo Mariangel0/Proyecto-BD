@@ -142,7 +142,6 @@
   font-size: 1.1rem;
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .brand-text h1 {
     font-size: 1.25rem;
